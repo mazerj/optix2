@@ -14,6 +14,7 @@ function showcalib(fname)
 %
 
 d=importdata(fname);
+d = d.data;
 
 n = 1;
 r=d(:,n); n=n+1;
@@ -71,9 +72,8 @@ fprintf('  red gamma = %.2f\n', G(2));
 fprintf('green gamma = %.2f\n', G(3));
 fprintf(' blue gamma = %.2f\n', G(4));
 
-ylabel('big Y');
-xlabel('gun setting');
-legend('k', 'k', 'r', 'r', 'g', 'g', 'b', 'b', 'location', 'northwest');
+ylabel('big Y (cd/m^2)');
+xlabel('gun output');
 hold off;
 title(sprintf('%s: lum gamma=%.2f', fname, G(1)));
 
