@@ -60,7 +60,7 @@ class Optix():
 
     def selfcalibrate(self):
         print "wait...",
-        self.read('C0')
+        self.read('CO')
         print "done\n",
         
     def clear(self):
