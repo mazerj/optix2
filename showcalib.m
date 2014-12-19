@@ -76,6 +76,7 @@ ylabel('big Y (cd/m^2)');
 xlabel('gun output');
 hold off;
 title(sprintf('%s: lum gamma=%.2f', fname, G(1)));
+legend off;
 
 subplot(4,4,[9 10 13 14]);
 plot(x, y, 'k.');

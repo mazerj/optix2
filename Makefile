@@ -1,6 +1,7 @@
 INSTALLDIR=/auto/share/pypeextra
 
 install:
+	sudo cp optix.py $(INSTALLDIR)
 	sudo cp gammacal.py $(INSTALLDIR)
 	sudo cp showcalib.m $(INSTALLDIR)
 	sudo cp gammacal.sh $(INSTALLDIR)/gammacal

@@ -1,4 +1,4 @@
 #!/bin/sh
-P=$(dirname $(dirname $(which pype)))
-$P/bin/pypenv `which gammacal`.py $*
+d=$(dirname $0)
+env PYTHONPATH=$d pypenv $0.py $*
 

@@ -1,15 +1,13 @@
 # Pure python gamma calibration
 
-The programs in this directory are for gamma correcting LCD
-and CRT monitors using the DTP94 usb calibration bug from
-the MonacoOptix guys.
+Pype-based gamma correction using the DTP94 usb calibration
+ug from the Monaco Optix.
 
-Calibration is pretty simple once installed:
+Calibration is simple once installed:
 
-1. plug DTP94 into USB port on the rig machine to calibrate
+1. plug DTP94 into a USB port on the rig machine to calibrate
 
-2. run the 'gammacal' program (should be in /auto/share/pypeextra
-   on your path:
+2. run the 'gammacal' program (need pypenv on your path)
    
     	% gammacal ConfigFile lcd|crt [gamma_value] >outfile
 	
@@ -23,11 +21,13 @@ Calibration is pretty simple once installed:
    a record of the complete luminance and color calibration
    for the monitor.
    
-4. Plot the resulting calibration:
+4. Plot the results in matlab:
 
-        % matlab
-        ...
         >> showcalib('outfile');
 
+## Dependencies
 
-The C dtp94 program is no longer needed.
+- [Python](http://www.python.org)
+- [pype](http://github.com/mazerj/pype3)
+  * pype has it's own dependencies (numpy/scipy & pygame)
+- [pyusb](http://walac.github.io/pyusb/) library
