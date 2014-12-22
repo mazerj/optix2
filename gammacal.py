@@ -66,11 +66,7 @@ except optix.OptixMissing:
 sys.stdout.write("Calibrate offsets? [yN] "); sys.stdout.flush()
 x = sys.stdin.readline()
 if x[0] == 'y' or x[0] == 'Y':
-    sys.stdout.write('Place calibration bug on opaque surface\n')
-    sys.stdout.write('and hit RETURN >> '); sys.stdout.flush()
-    sys.stdin.readline()
-    dtp.selfcalibrate()
-    sys.stdout.write('\n\n');
+    dtp.selfcalibrate(prompt=True)
 
 if not full:
     fb = FrameBuffer(dpy, w, h, False, sync=0)

@@ -31,8 +31,14 @@ class Optix():
                             lambda e: usb.util.endpoint_direction(e.bEndpointAddress) == usb.util.ENDPOINT_OUT)
         self.dev.set_interface_altsetting(intf.bInterfaceNumber, intf.bAlternateSetting)
 
-        # will generate error if not attached..
-        self.read('010aCF')
+        # will generate error if not attached and set's extra digit precision
+        # at same time
+        self.reset()
+        self.reset()
+        self.read('010ACF')               # extra digit resolutio
+        self.read('0019CF')               # no black point subtraction
+        self.read('ECF')                  # factory cal
+        self.read('0117CF')               # enable drift compensation
 
     def read(self, cmd):
         self.ep_r.clear_halt()
@@ -40,15 +46,25 @@ class Optix():
         self.dev.write(self.ep_w.bEndpointAddress, cmd+'\r', TIMEOUT)
         return self.dev.read(self.ep_r.bEndpointAddress, BUFSIZE, TIMEOUT)
 
+    def reset(self):
+        self.readstr('0PR')
+
+    def id(self):
+        s = self.readstr('SV')
+        return s.split('\r')[0]
+
+    def readstr(self, cmd):
+        # is is a string of form ..results...\r<NN>, where NN is result code..
+        s = string.join(map(chr, self.read(cmd)), '')
+        return s
+        
     def XYZ(self):
-        s = self.read('0201RM')
-        s = string.join(map(chr, s), '')
+        s = self.readstr('0201RM')
         s = string.strip(string.split(s, '\r')[0])
         return map(float,string.split(s)[1::2])
     
     def Yxy(self):
-        s = self.read('0301RM')
-        s = string.join(map(chr, s), '')
+        s = self.readstr('0301RM')
         s = string.strip(string.split(s, '\r')[0])
         return map(float,string.split(s)[1::2])
 
@@ -58,10 +74,15 @@ class Optix():
         else:
             self.read('0116CF')
 
-    def selfcalibrate(self):
-        print "wait...",
+    def selfcalibrate(self, prompt=True):
+        if prompt:
+            sys.stdout.write('Place calibration bug on opaque surface\n')
+            sys.stdout.write('and hit RETURN >> ')
+            sys.stdout.flush()
+            sys.stdin.readline()
+        print "Wait...",
         self.read('CO')
-        print "done\n",
+        print "done.\n",
         
     def clear(self):
         self.read('CE')
@@ -71,9 +92,6 @@ class Optix():
 if __name__ == '__main__':
     o = Optix()
     o.clear()
-    sys.stdout.write('Ready? ')
-    sys.stdin.readline()
-    o.selfcalibrate()
-    o.clear()
-    print o.read('010aCF')
-    print o.Yxy()
+    print o.id()
+    print 'Yxy', o.Yxy()
+    print 'XYZ', o.XYZ()
